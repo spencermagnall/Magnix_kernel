@@ -6,6 +6,7 @@
 #include "serial.h"
 #include "psf.h"
 #include "tss.h"
+#include "idt.h"
 #include "console.h"
 
 
@@ -152,6 +153,11 @@ void kmain(void) {
     print_serial("Before tss_init\n");
     tss_init();
     print_serial("After tss init\n");
+    print_serial("Before idt_init\n");
+    idt_init();
+    print_serial("After idt init\n");
+    // Check div 0 error
+    __asm__ volatile("int $0x0");
 
     init_serial();
     print_serial("Hello from the kernel!");
