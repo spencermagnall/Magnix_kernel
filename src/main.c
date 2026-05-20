@@ -2,8 +2,10 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <limine.h>
+#include "gdt.h"
 #include "serial.h"
 #include "psf.h"
+#include "tss.h"
 #include "console.h"
 
 
@@ -143,6 +145,13 @@ void kmain(void) {
     // Note: we assume the framebuffer model is RGB with 32-bit pixels.
     volatile uint32_t *fb_ptr = framebuffer->address;
     uint32_t pitch = framebuffer->pitch; 
+
+    print_serial("before gdt_init\n");
+    gdt_init();
+    print_serial("after gdt_init\n");
+    print_serial("Before tss_init\n");
+    tss_init();
+    print_serial("After tss init\n");
 
     init_serial();
     print_serial("Hello from the kernel!");
